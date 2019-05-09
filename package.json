@@ -1,0 +1,28 @@
+{
+  "name": "hexo-elasticsearch",
+  "version": "1.0.0",
+  "description": "synchronize hexo posts to elasticsearch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kricsleo/hexo-elasticsearch.git"
+  },
+  "keywords": [
+    "hexo",
+    "elasticsearch"
+  ],
+  "author": "kricsleo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kricsleo/hexo-elasticsearch/issues"
+  },
+  "homepage": "https://github.com/kricsleo/hexo-elasticsearch#readme",
+  "dependencies": {
+    "elasticsearch": "^16.0.0",
+    "hexo-util": "^0.6.3",
+    "moment": "^2.24.0"
+  }
+}
