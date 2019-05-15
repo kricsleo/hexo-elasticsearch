@@ -30,7 +30,6 @@ elasticsearch:
   dateFormat: YYYY-MM-DD
 ```
 
-After configuring your elasticsearch info, every time you run `hexo g` or `hexo s`, your posts will be synchronized to your elasticsearch.
+After configuring your elasticsearch info, every time you run `hexo g` or `hexo s`, your posts will be synchronized to your elasticsearch. 
 
-At this moment, I've just use serveral fields: `title`, `subtitle`, `author`, 'create_date', `update_date`, `link`, `text`
-
+Then you can check your elasticsearch for your posts.

@@ -26,9 +26,9 @@ const generatorDocsByPosts = posts => posts.map(post => ({
   author: post.author,
   create_date: moment(post.date).format(config.dateFormat),
   update_date: moment(post.updated).format(config.dateFormat),
-  // TODO: change link to relative link
+  path: post.path,
   link: post.permalink,
-  text: minify(post.content),
+  content: minify(post.content),
 }));
 
 const clearPrevDocs = (index, type) => client.deleteByQuery({
@@ -62,7 +62,7 @@ const mapping = (index, type) => client.indices.exists({
     return client.indices.existsType({
       index,
       type
-    }).then(isTypeExist => isIndexExist ? null : putMapping(index, type));
+    }).then(isTypeExist => isTypeExist ? null : putMapping(index, type));
   } else {
     return client.indices.create({
       index
@@ -88,11 +88,14 @@ const putMapping = (index, type) =>
           analyzer: 'ik_max_word',
           search_analyzer: 'ik_max_word'
         },
-        text: {
+        content: {
           type: 'text',
           term_vector: 'with_positions_offsets',
           analyzer: 'ik_max_word',
           search_analyzer: 'ik_max_word'
+        },
+        path: {
+          type: 'keyword'
         },
         link: {
           type: 'keyword'
@@ -122,12 +125,12 @@ const insertDocs = (index, type, docs) =>
       let errorCount = 0;
       res.items.forEach(item => {
         if (item.index && item.index.error) {
-          console.error(`elasticsearch: ${errorCount++} synchronize failed \n ${item.index.error}`);
+          console.error('\033[31mElasticsearch: \033[0m', `${errorCount++} synchronize failed \n ${item.index.error}`);
         }
       });
 
       const total = res.items.length;
-      console.log(`elasticsearch: synchronize done, ${total - errorCount}/${total} synchronized successfully!`);
+      console.log('\033[32mElasticsearch: \033[0m', `synchronize done, ${total - errorCount}/${total} synchronized successfully!`);
     })
 
 hexo.extend.generator.register('elasticsearch', site => {
@@ -136,8 +139,9 @@ hexo.extend.generator.register('elasticsearch', site => {
   }).then(() => mapping(config.index, config.type))
     .then(() => clearPrevDocs(config.index, config.type))
     .then(res => {
-      console.log(`elasticsearch: delete previous articles done, ${res.deleted}/${res.total} delete successfully!`);
+      console.log('\033[32mElasticsearch: \033[0m', `delete previous articles done, ${res.deleted}/${res.total} delete successfully!`);
+      
       return insertDocs(config.index, config.type, generatorDocsByPosts(site.posts));
     })
-    .catch(err => console.error(`elasticsearch: synchronizing articles failed \n ${err}`))
+    .catch(err => console.error('\033[31mElasticsearch: \033[0m', `synchronizing articles failed \n ${err}`))
 })
