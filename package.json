@@ -22,7 +22,7 @@
   "homepage": "https://github.com/kricsleo/hexo-elasticsearch#readme",
   "dependencies": {
     "elasticsearch": "^16.0.0",
-    "hexo-util": "^0.6.3",
+    "hexo-util": "^3.0.1",
     "moment": "^2.24.0"
   }
 }
